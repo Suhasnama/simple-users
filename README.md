@@ -58,6 +58,28 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Running in containers
+
+```bash
+# create docker network
+docker network create app-tier
+
+# create node app container, from root of project
+docker run -d --name node-app \
+    --network app-tier \
+    -v $(pwd):/app \
+    -p 3000:3000 \
+    node:latest \
+    tail -f /dev/null
+    
+# to create a mysql db container
+docker run -d --name mysql \
+    --network app-tier \
+    -e MYSQL_ROOT_PASSWORD=password123 \
+    -e MYSQL_DATABASE=test_users \
+    bitnami/mysql:latest
+```
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
